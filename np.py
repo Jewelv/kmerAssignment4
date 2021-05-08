@@ -5,13 +5,15 @@ import numpy as np
 import pandas as pd
 import argparse
 
-def unique(ary):
-  linr = []
+
+def unique(ary): 
+  list = []
   i=0
   x= np.array(ary)
   for i in range(len(x[i])):
-   linr.append(np.unique(x[i]))
-  return linr
+   list.append(np.unique(x[i]))
+  return list
+
 
 def window(string):
   j = []
@@ -24,13 +26,19 @@ def window(string):
     l+=1
   return j
 
-def get_obs(linr):
-  get_linr = []
-  for x_linr in linr:
-    print(x_linr)
-    counter = len(x_linr)
-    get_linr.append(counter)
-  return get_linr
+#generation of the observed kmer values from the string
+#
+def get_obs(list):
+  get_list = []
+  for x_list in list:
+    print(x_list)
+    counter = len(x_list)
+    get_list.append(counter)
+  return get_list
+
+#function to get the possible kmer values. 
+#k must be less or equal to the string sequence length
+#this will generate all possible kmer value for the string
 
 def get_pos(string):
   j= []
@@ -52,29 +60,31 @@ def get_pos(string):
    k+=1
   return j
 
-def get_df(string,get_linr,pos):
+#generation of the dataframe in order of columns and obtains the previously generated data
+def get_df(string,get_list,pos):
   kmer = []
   for i in range(1,len(string)+1):
     kmer.append(i)
-  df = pd.DataFrame(linr(zip(kmer,get_linr,pos)), columns = ['k','Obs', 'Pos'])
+  df = pd.DataFrame(list(zip(kmer,get_list,pos)), columns = ['k','Obs', 'Pos'])
   df.at['total','Obs'] = df['Obs'].sum()
   df.at['total','Pos'] = df['Pos'].sum()
   return df
 
+#function to obtain linguistic complexity through the summarization of the observed kmers and division of the possible kmers
 def get_lc(df):
   lc = df['Obs'].sum()/df['Pos'].sum()
   return lc
 
 def main():
-  fn = open("dna.txt","r+")
+  fn = open("dna.txt","r+") #edit to your text file
   file = [seq.strip() for seq in fn]
   for seq in file:
     ary = window(seq)
     ary.pop(0)
-    linr =unique(ary)
-    get_linr = get_obs(linr)
+    list =unique(ary)
+    get_list = get_obs(list)
     pos = get_pos(seq)
-    df1 = get_df(seq,get_linr,pos)
+    df1 = get_df(seq,get_list,pos)
     df2 = df1['Obs'].sum()/df1['Pos'].sum()
     print(df1)
     print(df2)
