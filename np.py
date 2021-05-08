@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import argparse
 
+#python starts with 0 value
 
 def unique(ary): 
   list = []
