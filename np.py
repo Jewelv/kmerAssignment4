@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
+#submit by python3 np.py dna.txt
 
 import sys
 import numpy as np
 import pandas as pd
 import argparse
+
+#python starts with 0 value
 
 def unique(ary):
   list = []
@@ -23,7 +26,8 @@ def window(string):
     k+=1
     l+=1
   return j
-
+#generation of the observed kmer values from the string
+  #
 def get_obs(list):
   get_list = []
   for x_list in list:
@@ -31,7 +35,10 @@ def get_obs(list):
     counter = len(x_list)
     get_list.append(counter)
   return get_list
-
+#function to get the possible kmer values. 
+#k must be less or equal to the string sequence length
+#this will generate all possible kmer value for the string
+  
 def get_pos(string):
   j= []
   k=1
@@ -51,7 +58,7 @@ def get_pos(string):
    l=0
    k+=1
   return j
-
+#generation of the dataframe in order of columns and obtains the previously generated data
 def get_df(string,get_list,pos):
   kmer = []
   for i in range(1,len(string)+1):
@@ -61,6 +68,7 @@ def get_df(string,get_list,pos):
   df.at['total','Pos'] = df['Pos'].sum()
   return df
 
+#function to obtain linguistic complexity through the summarization of the observed kmers and division of the possible kmers
 def get_lc(df):
   lc = df['Obs'].sum()/df['Pos'].sum()
   return lc
@@ -69,7 +77,7 @@ def get_lc(df):
 
 
 def main(args):
-  fn = open("dna.txt","r+")
+  fn = open("dna.txt","r+") #edit to your text file
   file = [seq.strip() for seq in fn]
   for seq in file:
     ary = window(seq)
